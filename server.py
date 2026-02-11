@@ -16,9 +16,13 @@ def emo_detector():
     '''
     text_to_analyse = request.args.get('textToAnalyze')
     emotion = emotion_detector(text_to_analyse)
-    emotion_predictions = str(dict(list(emotion.items())[:4]))
+    if emotion['dominant_emotion'] is None:
+        return "Invalid text! Please try again!"
 
-    return f"""\
+    else:
+        emotion_predictions = str(dict(list(emotion.items())[:4]))
+
+        return f"""\
 For the given statement, the system response is {emotion_predictions[1:len(emotion_predictions)-1]} and 'sadness': {emotion['sadness']}. \
 The dominant emotion is <b>{emotion['dominant_emotion']}</b>.
 """
